@@ -93,7 +93,7 @@ export function Settings() {
                             <input
                                 type="number"
                                 className="input"
-                                style={{ width: 70, borderColor: intervalError ? 'var(--color-status-error)' : undefined, textAlign: 'center', marginLeft: 'var(--spacing-sm)' }}
+                                style={{ width: 80, borderColor: intervalError ? 'var(--color-status-error)' : undefined, textAlign: 'center', marginLeft: 'var(--spacing-sm)', padding: '4px 8px' }}
                                 min={5}
                                 max={300}
                                 value={refreshInterval}
