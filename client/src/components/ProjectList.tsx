@@ -328,7 +328,7 @@ export function ProjectList() {
                         disabled={syncing}
                         title={language === 'zh' ? '从平台同步最新数据' : 'Sync from platforms'}
                     >
-                        <RefreshCw size={14} style={{ animation: syncing ? 'spin 1s linear infinite' : 'none' }} />
+                        <RefreshCw size={14} className={syncing ? 'spinning' : ''} />
                         {language === 'zh' ? '同步' : 'Sync'}
                     </button>
                     <span className="badge badge-neutral">{t('projects.total', language, { count: projects.length })}</span>

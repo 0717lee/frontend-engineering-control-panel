@@ -69,10 +69,7 @@ export function Header() {
                     >
                         <RefreshCw
                             size={18}
-                            style={{
-                                animation: systemLoading ? 'spin 1s linear infinite' : 'none',
-                                transformOrigin: 'center center'
-                            }}
+                            className={systemLoading ? 'spinning' : ''}
                         />
                     </button>
 
@@ -140,11 +137,6 @@ export function Header() {
             )}
 
             <style>{`
-                @keyframes spin {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
-                }
-                
                 .notification-panel {
                     position: absolute;
                     top: 100%;
