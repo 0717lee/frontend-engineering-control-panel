@@ -88,44 +88,42 @@ export function Settings() {
                                 /api
                             </code>
                         </div>
-                        <div className="project-meta-item" style={{ justifyContent: 'space-between', marginTop: 'var(--spacing-sm)', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--spacing-xs)' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                                <span style={{ color: 'var(--color-text-muted)' }}>{t('settings.refreshInterval', language)}:</span>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-xs)' }}>
-                                    <input
-                                        type="number"
-                                        className="input"
-                                        style={{ width: 70, borderColor: intervalError ? 'var(--color-status-error)' : undefined }}
-                                        min={5}
-                                        max={300}
-                                        value={refreshInterval}
-                                        onChange={(e) => {
-                                            const val = Number(e.target.value);
-                                            setRefreshInterval(val || 5);
-                                            if (val < 5 || val > 300) {
-                                                setIntervalError(t('settings.intervalRange', language));
-                                            } else {
-                                                setIntervalError('');
-                                            }
-                                        }}
-                                        onBlur={(e) => {
-                                            const val = Number(e.target.value);
-                                            if (val < 5) {
-                                                setRefreshInterval(5);
-                                                setIntervalError('');
-                                            } else if (val > 300) {
-                                                setRefreshInterval(300);
-                                                setIntervalError('');
-                                            }
-                                        }}
-                                    />
-                                    <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>{t('settings.seconds', language)}</span>
-                                </div>
+                        <div className="project-meta-item" style={{ justifyContent: 'space-between', marginTop: 'var(--spacing-sm)' }}>
+                            <span style={{ color: 'var(--color-text-muted)' }}>{t('settings.refreshInterval', language)}:</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <input
+                                    type="number"
+                                    className="input"
+                                    style={{ width: 60, borderColor: intervalError ? 'var(--color-status-error)' : undefined, textAlign: 'center' }}
+                                    min={5}
+                                    max={300}
+                                    value={refreshInterval}
+                                    onChange={(e) => {
+                                        const val = Number(e.target.value);
+                                        setRefreshInterval(val || 5);
+                                        if (val < 5 || val > 300) {
+                                            setIntervalError(t('settings.intervalRange', language));
+                                        } else {
+                                            setIntervalError('');
+                                        }
+                                    }}
+                                    onBlur={(e) => {
+                                        const val = Number(e.target.value);
+                                        if (val < 5) {
+                                            setRefreshInterval(5);
+                                            setIntervalError('');
+                                        } else if (val > 300) {
+                                            setRefreshInterval(300);
+                                            setIntervalError('');
+                                        }
+                                    }}
+                                />
+                                <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>{t('settings.seconds', language)}</span>
                             </div>
-                            {intervalError && (
-                                <span style={{ color: 'var(--color-status-error)', fontSize: '0.75rem' }}>{intervalError}</span>
-                            )}
                         </div>
+                        {intervalError && (
+                            <span style={{ color: 'var(--color-status-error)', fontSize: '0.75rem', marginTop: 'var(--spacing-xs)' }}>{intervalError}</span>
+                        )}
                     </div>
                 </div>
 

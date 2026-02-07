@@ -65,12 +65,12 @@ export function Header() {
                         onClick={handleRefresh}
                         disabled={systemLoading}
                         title={t('header.refresh', language)}
-                        style={{
-                            opacity: systemLoading ? 0.5 : 1,
-                            animation: systemLoading ? 'spin 1s linear infinite' : 'none'
-                        }}
+                        style={{ opacity: systemLoading ? 0.7 : 1 }}
                     >
-                        <RefreshCw size={18} />
+                        <RefreshCw
+                            size={18}
+                            style={{ animation: systemLoading ? 'spin 1s linear infinite' : 'none' }}
+                        />
                     </button>
 
                     {/* Notifications */}
