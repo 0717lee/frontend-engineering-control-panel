@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Settings as SettingsIcon, Server, Bell, Shield, Palette, Globe } from 'lucide-react';
+import { Settings as SettingsIcon, Server, Bell, Palette, Globe } from 'lucide-react';
 import { useStore, Theme } from '../store';
 import { t, Language } from '../i18n';
 
@@ -85,7 +85,7 @@ export function Settings() {
                         <div className="project-meta-item">
                             <span style={{ color: 'var(--color-text-muted)' }}>{t('settings.apiUrl', language)}:</span>
                             <code className="mono" style={{ color: 'var(--color-accent-teal-light)' }}>
-                                http://localhost:3001
+                                /api
                             </code>
                         </div>
                         <div className="project-meta-item" style={{ justifyContent: 'space-between', marginTop: 'var(--spacing-sm)', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--spacing-xs)' }}>
@@ -165,23 +165,7 @@ export function Settings() {
                     </div>
                 </div>
 
-                {/* Security */}
-                <div className="glass-card">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', marginBottom: 'var(--spacing-md)' }}>
-                        <Shield size={18} />
-                        <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>{t('settings.security', language)}</h3>
-                    </div>
-                    <div className="project-meta">
-                        <div className="project-meta-item">
-                            <span style={{ color: 'var(--color-text-muted)' }}>{t('settings.apiAuth', language)}:</span>
-                            <span className="badge badge-neutral">{t('settings.notConfigured', language)}</span>
-                        </div>
-                        <div className="project-meta-item">
-                            <span style={{ color: 'var(--color-text-muted)' }}>{t('settings.accessControl', language)}:</span>
-                            <span>{t('settings.localAccess', language)}</span>
-                        </div>
-                    </div>
-                </div>
+
 
                 {/* About */}
                 <div className="glass-card">
@@ -196,7 +180,7 @@ export function Settings() {
                         </div>
                         <div className="project-meta-item">
                             <span style={{ color: 'var(--color-text-muted)' }}>{t('settings.environment', language)}:</span>
-                            <span>{t('settings.devEnv', language)}</span>
+                            <span>{t('settings.prodEnv', language)}</span>
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { FolderKanban, ExternalLink, GitCommit, Clock, RefreshCw, Plus, X } from
 import { useStore, Project } from '../store';
 import { t, Language } from '../i18n';
 
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = '/api';
 
 function formatDate(dateString: string, language: Language): string {
     const date = new Date(dateString);
