@@ -1,0 +1,31 @@
+# Task Plan: Frontend Engineering Control Panel
+
+- [x] Phase 1: Planning & Design <!-- id: 0 -->
+  - [x] Analyze requirements and create technical plan <!-- id: 1 -->
+  - [x] Create implementation_plan.md for user review <!-- id: 2 -->
+  - [x] User approval of plan <!-- id: 3 -->
+- [x] Phase 2: Project Initialization <!-- id: 4 -->
+  - [x] Initialize Git repository <!-- id: 5 -->
+  - [x] Set up Monorepo structure (client/server) <!-- id: 6 -->
+  - [x] Initialize Backend (Node.js + TS + Express/Fastify) <!-- id: 7 -->
+  - [x] Initialize Frontend (Vite + React + TS) <!-- id: 8 -->
+- [x] Phase 3: Backend Implementation <!-- id: 9 -->
+  - [x] Implement System Info API (CPU, Mem, Uptime) <!-- id: 10 -->
+  - [x] Implement Project Status Schema & API <!-- id: 11 -->
+  - [x] Implement Error Log Schema & API <!-- id: 12 -->
+  - [x] Implement "recent N logs" storage mechanism <!-- id: 13 -->
+- [x] Phase 4: Frontend Implementation <!-- id: 14 -->
+  - [x] Setup UI Framework (Tailwind/CSS Modules + Glassmorphism styles) <!-- id: 15 -->
+  - [x] Implement Dashboard Layout (Sidebar, Header) <!-- id: 16 -->
+  - [x] Develop Server Status Panel (ECharts/Custom) <!-- id: 17 -->
+  - [x] Develop Project List Component <!-- id: 18 -->
+  - [x] Develop Error Log Viewer <!-- id: 19 -->
+  - [x] Integrate Logic (Zustand store, API calls) <!-- id: 20 -->
+- [x] Phase 5: Verification & Polish <!-- id: 21 -->
+  - [x] Verify Deployment on Simulation (Local build) <!-- id: 22 -->
+  - [x] Run Tests (Unit tests coverage) <!-- id: 23 -->
+  - [x] Polish UI (Animations, Glass effects) <!-- id: 24 -->
+- [x] Phase 6: Documentation & Handover <!-- id: 25 -->
+  - [x] Write Deployment Guide <!-- id: 26 -->
+  - [x] Write API Documentation <!-- id: 27 -->
+  - [x] Finalize Walkthrough Artifact <!-- id: 28 -->
