@@ -69,7 +69,10 @@ export function Header() {
                     >
                         <RefreshCw
                             size={18}
-                            style={{ animation: systemLoading ? 'spin 1s linear infinite' : 'none' }}
+                            style={{
+                                animation: systemLoading ? 'spin 1s linear infinite' : 'none',
+                                transformOrigin: 'center center'
+                            }}
                         />
                     </button>
 
