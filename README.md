@@ -1,9 +1,36 @@
 # 前端工程控制面板 (Frontend Engineering Control Panel)
 
-![Status](https://img.shields.io/badge/status-active-success)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Status](https://img.shields.io/badge/status-active-success) ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
-一个用于监控和管理前端项目的现代化控制面板，支持多平台集成（Vercel、Cloudflare、GitHub）。
+**This project is an internal frontend engineering tool designed to observe and manage frontend project deployment and runtime status.**
+
+这是一个用于监控和管理前端项目的现代化控制面板，支持多平台集成（Vercel、Cloudflare、GitHub）。
+
+## ⚠️ 重要声明 (Important Notice)
+
+### 🔒 线上环境为只读展示 (Read-Only Production)
+
+**线上环境仅用于展示功能，不提供写操作，且所有数据均为脱敏后的模拟数据或公开数据，不包含任何敏感信息。**
+
+-   **展示环境**: 仅供预览和演示目的。
+-   **只读模式**: 禁止任何写入、修改或删除操作。
+-   **安全保障**: 不存储真实生产环境的敏感凭证。
+
+### 💻 为什么不使用 Vercel / Serverless? (Why Server-Hosted?)
+
+本项目采用服务器独占部署（Server-Hosted）而非 Serverless 架构，基于以下工程考量：
+
+1.  **长期运行环境 (Long-Running Process)**:
+    -   我们需要一个持续运行的进程来执行定时任务（Cron Jobs），如定期轮询第三方平台 API、健康检查和日志聚合。Serverless 的无状态和短暂执行特性不适合此类任务。
+
+2.  **文件系统持久化 (File System Persistence)**:
+    -   项目使用 LowDB (基于 JSON 文件) 作为轻量级数据库。需要对本地文件系统进行读写操作以持久化数据。Serverless 环境通常不提供持久化的本地文件系统。
+
+3.  **内网穿透与监控 (Intranet Access & Monitoring)**:
+    -   作为内部工程工具，未来可能需要访问内网服务或数据库，部署在自有服务器上能提供更好的网络控制和安全隔离。
+
+4.  **性能与成本 (Performance & Cost)**:
+    -   对于高频的轮询和数据聚合操作，独占服务器能提供更稳定的性能，且在大规模数据处理时成本更可控。
 
 ## ✨ 功能特性
 
