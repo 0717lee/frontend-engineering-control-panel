@@ -4,45 +4,59 @@
 
 **English Documentation** | [中文文档](README.zh-CN.md)
 
-**This project is an internal frontend engineering tool designed to observe and manage frontend project deployment and runtime status.**
+**An internal frontend engineering tool designed to observe and manage frontend project deployment and runtime status.**
 
-It is a modern dashboard for monitoring and managing frontend projects, supporting multi-platform integrations (Vercel, Cloudflare, GitHub).
+This project serves as an engineering reference implementation for a self-hosted control panel. It integrates with Vercel, Cloudflare, and GitHub to provide a unified dashboard for DevOps and frontend infrastructure management.
 
-## ⚠️ Important Notice
+## 🌐 Public Access & Security
 
-### 🔒 Read-Only Production Environment
+The online instance is publicly accessible in **read-only mode** for demonstration purposes.
 
-**The production environment is for demonstration purposes only. It does not provide write operations, and all data is desensitized mock data or public data, containing no sensitive information.**
+-   **Read-Only**: No write operations (create, update, delete) are permitted.
+-   **Data Safety**: No sensitive credentials or private production data are exposed. All displayed data is sanitized or mocked.
+-   **Access Control**: The live demo represents a secure subset of the internal tool's capabilities.
 
--   **Demo Environment**: Intended for preview and demonstration purposes only.
--   **Read-Only Mode**: Write, modify, or delete operations are strictly prohibited.
--   **Security Assurance**: No sensitive credentials for real production environments are stored.
+## 🏗️ Architecture
 
-### 💻 Why Server-Hosted? (Not Vercel/Serverless)
+The system consists of:
 
-This project adopts a Server-Hosted deployment rather than a Serverless architecture based on the following engineering considerations:
+-   **Frontend Dashboard**: A responsive SPA built with **React 18** and **TypeScript**, utilizing **Vite** for build tooling and **Zustand** for state management.
+-   **Backend Service**: A lightweight **Fastify** server providing RESTful APIs for runtime metrics and project metadata.
+-   **Persistence Layer**: A local file-system database (**LowDB**) designed for simplicity and portability in self-hosted environments.
+-   **Integrations**: Direct API connectors for Vercel, Cloudflare, and GitHub.
 
-1.  **Long-Running Process**:
-    -   We need a persistent process to execute Cron Jobs, such as periodically polling third-party platform APIs, health checks, and log aggregation. The stateless and ephemeral nature of Serverless is unsuitable for such tasks.
+## 💻 Why Self-Hosted?
 
-2.  **File System Persistence**:
-    -   The project uses LowDB (JSON-based) as a lightweight database, requiring read/write access to the local file system for data persistence. Serverless environments typically do not provide persistent local file systems.
+This tool is intentionally deployed on a self-hosted server instead of serverless platforms (like Vercel) to satisfy specific engineering requirements:
 
-3.  **Intranet Access & Monitoring**:
-    -   As an internal engineering tool, future requirements may involve accessing intranet services or databases. Deploying on a dedicated server offers better network control and security isolation.
+### 1. Long-Running Processes
+We need a persistent process to execute background Cron Jobs, such as:
+-   Periodic polling of third-party platform APIs to sync deployment status.
+-   Continuous health checks of monitored sites.
+-   Real-time log aggregation and analysis.
 
-4.  **Performance & Cost**:
-    -   For high-frequency polling and data aggregation, a dedicated server offers more stable performance and controllable costs for large-scale data processing.
+Serverless functions are ephemeral and stateless, making them unsuitable for these stateful, long-running tasks.
+
+### 2. File System Persistence
+The project prioritizes data sovereignty and portability. Using a local file-based database requiring persistent disk access allows the entire system (code + data) to be self-contained and easily migrated.
+
+### 3. Intranet Capabilities
+As an engineering tool, future iterations may require access to internal networks, VPN-gated services, or self-hosted GitLab/Jenkins instances. A dedicated server allows for secure VPC peering and firewall configuration.
 
 ## ✨ Features
 
-- 📊 **Server Status Monitoring** - Real-time display of CPU, memory usage, and system uptime.
-- 📁 **Project Management** - Manage multiple frontend projects with manual import support.
-- 🔗 **Platform Integration** - Sync project status with Vercel, Cloudflare, and GitHub.
-- 📝 **Error Logs** - Centralized view and filtering of error logs.
-- 🎨 **Theme Switching** - Support for Dark/Light/System themes.
-- 🌐 **Multi-language** - Switch between English and Chinese interfaces.
-- ⚙️ **Configurable Settings** - Refresh interval, notification preferences, etc.
+- 📊 **Server Status Monitoring** - Real-time metrics for CPU, memory, uptime, and system load.
+- 📁 **Project Management** - Centralized management of multiple frontend projects.
+- 🔗 **Platform Sync** - Automated synchronization with Vercel, Cloudflare, and GitHub.
+- 📝 **Error Aggregation** - Centralized viewing and filtering of application error logs.
+- 🎨 **Adaptive UI** - Glassmorphism design with automatic Dark/Light theme switching.
+- 🌐 **Internationalization** - Native support for English and Chinese.
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18, TypeScript, Vite, Zustand, Lucide React, ECharts
+- **Backend**: Fastify, TypeScript, LowDB, Node-Schedule
+- **Styling**: CSS Variables, Glassmorphism, Responsive Grid
 
 ## 🚀 Quick Start
 
@@ -68,16 +82,16 @@ Create a `.env` file in the `server/` directory:
 
 ```env
 # Optional - Platform Integration Tokens
-GITHUB_TOKEN=your_github_token
-VERCEL_TOKEN=your_vercel_token
-CLOUDFLARE_API_TOKEN=your_cloudflare_token
-CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+GITHUB_TOKEN=your_token
+VERCEL_TOKEN=your_token
+CLOUDFLARE_API_TOKEN=your_token
+CLOUDFLARE_ACCOUNT_ID=your_id
 ```
 
-### Development Mode
+### Development
 
 ```bash
-# Run in the project root
+# Run backend and frontend in parallel
 npm run dev
 ```
 
@@ -90,30 +104,6 @@ npm run dev
 npm run build
 npm start
 ```
-
-## 📁 Project Structure
-
-```
-├── client/          # React + Vite Frontend
-│   ├── src/
-│   │   ├── components/   # UI Components
-│   │   ├── store/        # Zustand State Management
-│   │   └── i18n/         # Internationalization
-│   └── ...
-├── server/          # Fastify Backend
-│   ├── src/
-│   │   ├── routes/       # API Routes
-│   │   ├── db/           # LowDB Database
-│   │   └── ...
-│   └── ...
-└── package.json
-```
-
-## 🛠️ Tech Stack
-
-- **Frontend**: React 18, TypeScript, Vite, Zustand, ECharts
-- **Backend**: Fastify, TypeScript, LowDB
-- **Styling**: CSS Variables, Glassmorphism Design
 
 ## 📄 License
 

@@ -4,43 +4,59 @@
 
 [English Documentation](README.md) | **中文文档**
 
-**这是一个用于监控和管理前端项目的现代化控制面板，支持多平台集成（Vercel、Cloudflare、GitHub）。**
+**即时监控与管理前端项目部署及运行状态的内部工程工具。**
 
-## ⚠️ 重要声明
+本项目作为一个自托管控制面板的工程参考实现，集成了 Vercel、Cloudflare 和 GitHub，为 DevOps 和前端基础设施管理提供统一的仪表盘。
 
-### 🔒 线上环境为只读展示
+## 🌐 公网访问与安全声明
 
-**线上环境仅用于展示功能，不提供写操作，且所有数据均为脱敏后的模拟数据或公开数据，不包含任何敏感信息。**
+线上实例仅作为**只读模式**供演示使用。
 
--   **展示环境**: 仅供预览和演示目的。
 -   **只读模式**: 禁止任何写入、修改或删除操作。
--   **安全保障**: 不存储真实生产环境的敏感凭证。
+-   **数据安全**: 不暴露任何敏感凭证或真实的生产数据。所有展示数据均为脱敏或模拟数据。
+-   **访问控制**: 演示环境仅展示内部工具功能的一个安全子集。
 
-### 💻 为什么不使用 Vercel / Serverless?
+## 🏗️ 系统架构
 
-本项目采用服务器独占部署（Server-Hosted）而非 Serverless 架构，基于以下工程考量：
+本系统由以下部分组成：
 
-1.  **长期运行环境 (Long-Running Process)**:
-    -   我们需要一个持续运行的进程来执行定时任务（Cron Jobs），如定期轮询第三方平台 API、健康检查和日志聚合。Serverless 的无状态和短暂执行特性不适合此类任务。
+-   **前端仪表盘**: 基于 **React 18** 和 **TypeScript** 构建的响应式 SPA，使用 **Vite** 进行构建，**Zustand** 进行状态管理。
+-   **后端服务**: 一个轻量级的 **Fastify** 服务，提供运行时指标和项目元数据的 RESTful API。
+-   **持久化层**: 使用本地文件系统数据库 (**LowDB**)，专为自托管环境的简单性和可移植性而设计。
+-   **集成服务**: 内置 Vercel, Cloudflare 和 GitHub 的 API 连接器。
 
-2.  **文件系统持久化 (File System Persistence)**:
-    -   项目使用 LowDB (基于 JSON 文件) 作为轻量级数据库。需要对本地文件系统进行读写操作以持久化数据。Serverless 环境通常不提供持久化的本地文件系统。
+## 💻 为什么选择自托管 (Self-Hosted)?
 
-3.  **内网穿透与监控 (Intranet Access & Monitoring)**:
-    -   作为内部工程工具，未来可能需要访问内网服务或数据库，部署在自有服务器上能提供更好的网络控制和安全隔离。
+本项目特意采用服务器自托管部署而非 Serverless 平台（如 Vercel），是基于以下工程考量：
 
-4.  **性能与成本 (Performance & Cost)**:
-    -   对于高频的轮询和数据聚合操作，独占服务器能提供更稳定的性能，且在大规模数据处理时成本更可控。
+### 1. 长期运行进程 (Long-Running Processes)
+我们需要一个持久进程来执行后台定时任务（Cron Jobs），例如：
+-   定期轮询第三方平台 API 以同步部署状态。
+-   受控站点的持续健康检查。
+-   实时日志聚合与分析。
 
-## ✨ 功能特性
+Serverless 函数通常是无状态且临时的，不适合处理此类有状态的长期任务。
 
-- 📊 **服务器状态监控** - 实时显示 CPU、内存使用率和系统运行时间
-- 📁 **项目管理** - 管理多个前端项目，支持手动导入
-- 🔗 **平台集成** - 与 Vercel、Cloudflare、GitHub 同步项目状态
-- 📝 **错误日志** - 集中查看和过滤错误日志
-- 🎨 **主题切换** - 支持深色/浅色/跟随系统主题
-- 🌐 **多语言** - 中文/英文界面切换
-- ⚙️ **可配置设置** - 刷新间隔、通知偏好等
+### 2. 文件系统持久化
+项目注重数据的主权和可移植性。使用需要持久化磁盘访问的本地文件数据库，使得整个系统（代码+数据）完全自包含，易于迁移和备份。
+
+### 3. 内网穿透能力
+作为工程工具，未来的迭代可能需要访问内网服务、VPN 保护的资源或自托管的 GitLab/Jenkins 实例。专用服务器允许进行安全的 VPC 对等连接和防火墙配置。
+
+## ✨ 核心特性
+
+- 📊 **服务器状态监控** - 实时显示 CPU、内存使用率、运行时间和系统负载。
+- 📁 **项目统一管理** - 集中管理多源前端项目。
+- 🔗 **平台自动同步** - 自动同步 Vercel, Cloudflare 和 GitHub 的项目状态。
+- 📝 **错误日志聚合** - 集中查看和筛选应用程序错误日志。
+- 🎨 **自适应 UI** - 玻璃拟态设计，支持自动深色/浅色主题切换。
+- 🌐 **国际化支持** - 原生支持中文和英文界面。
+
+## 🛠️ 技术栈
+
+- **前端**: React 18, TypeScript, Vite, Zustand, Lucide React, ECharts
+- **后端**: Fastify, TypeScript, LowDB, Node-Schedule
+- **样式**: CSS Variables, Glassmorphism, Responsive Grid
 
 ## 🚀 快速开始
 
@@ -66,16 +82,16 @@ cd ../server && npm install
 
 ```env
 # 可选 - 平台集成 Token
-GITHUB_TOKEN=your_github_token
-VERCEL_TOKEN=your_vercel_token
-CLOUDFLARE_API_TOKEN=your_cloudflare_token
-CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+GITHUB_TOKEN=your_token
+VERCEL_TOKEN=your_token
+CLOUDFLARE_API_TOKEN=your_token
+CLOUDFLARE_ACCOUNT_ID=your_id
 ```
 
 ### 开发模式
 
 ```bash
-# 在项目根目录运行
+# 并行运行前后端
 npm run dev
 ```
 
@@ -88,29 +104,6 @@ npm run dev
 npm run build
 npm start
 ```
-
-## 📁 项目结构
-
-```
-├── client/          # React + Vite 前端
-│   ├── src/
-│   │   ├── components/   # UI 组件
-│   │   ├── store/        # Zustand 状态管理
-│   │   └── i18n/         # 国际化
-│   └── ...
-├── server/          # Fastify 后端
-│   ├── src/
-│   │   ├── routes/       # API 路由
-│   │   └── db/           # LowDB 数据库
-│   └── ...
-└── package.json
-```
-
-## 🛠️ 技术栈
-
-- **前端**: React 18, TypeScript, Vite, Zustand, ECharts
-- **后端**: Fastify, TypeScript, LowDB
-- **样式**: CSS Variables, Glassmorphism Design
 
 ## 📄 License
 
