@@ -6,7 +6,7 @@
 
 **An internal frontend engineering tool designed to observe and manage frontend project deployment and runtime status.**
 
-This project serves as an engineering reference implementation for a self-hosted control panel. It integrates with Vercel, Cloudflare, and GitHub to provide a unified dashboard for DevOps and frontend infrastructure management.
+This project serves as an engineering reference implementation for a self-hosted control panel. It integrates with Vercel, Cloudflare, and GitHub to provide a unified dashboard for frontend engineering operations and deployment visibility.
 
 ## 🌐 Public Access & Security
 
@@ -22,12 +22,12 @@ The system consists of:
 
 -   **Frontend Dashboard**: A responsive SPA built with **React 18** and **TypeScript**, utilizing **Vite** for build tooling and **Zustand** for state management.
 -   **Backend Service**: A lightweight **Fastify** server providing RESTful APIs for runtime metrics and project metadata.
--   **Persistence Layer**: A local file-system database (**LowDB**) designed for simplicity and portability in self-hosted environments.
+-   **Lightweight Persistence**: A local file-system store (**LowDB**) for non-critical engineering metadata, designed for simplicity and portability in self-hosted environments.
 -   **Integrations**: Direct API connectors for Vercel, Cloudflare, and GitHub.
 
 ## 💻 Why Self-Hosted?
 
-This tool is intentionally deployed on a self-hosted server instead of serverless platforms (like Vercel) to satisfy specific engineering requirements:
+Although this is a frontend-focused engineering tool, certain operational requirements make a self-hosted environment more appropriate instead of serverless platforms (like Vercel):
 
 ### 1. Long-Running Processes
 We need a persistent process to execute background Cron Jobs, such as:
@@ -47,7 +47,7 @@ As an engineering tool, future iterations may require access to internal network
 
 - 📊 **Server Status Monitoring** - Real-time metrics for CPU, memory, uptime, and system load.
 - 📁 **Project Management** - Centralized management of multiple frontend projects.
-- 🔗 **Platform Sync** - Automated synchronization with Vercel, Cloudflare, and GitHub.
+- 🔗 **Platform Sync** - Read-only synchronization of deployment and repository metadata from Vercel, Cloudflare, and GitHub.
 - 📝 **Error Aggregation** - Centralized viewing and filtering of application error logs.
 - 🎨 **Adaptive UI** - Glassmorphism design with automatic Dark/Light theme switching.
 - 🌐 **Internationalization** - Native support for English and Chinese.
@@ -78,7 +78,9 @@ cd ../server && npm install
 
 ### Configuration
 
-Create a `.env` file in the `server/` directory:
+Create a `.env` file in the `server/` directory.
+
+> **Note**: All platform tokens are optional and used only for read-only metadata access.
 
 ```env
 # Optional - Platform Integration Tokens
