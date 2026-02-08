@@ -4,6 +4,8 @@
 
 **English Documentation** | [中文文档](README.zh-CN.md)
 
+> **Note**: This project is considered feature-complete for its intended engineering scope.
+
 **An internal frontend engineering tool designed to observe and manage frontend project deployment and runtime status.**
 
 This project serves as an engineering reference implementation for a self-hosted control panel. It integrates with Vercel, Cloudflare, and GitHub to provide a unified dashboard for frontend engineering operations and deployment visibility.
