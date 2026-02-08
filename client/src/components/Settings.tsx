@@ -176,7 +176,11 @@ export function Settings() {
                         </div>
                         <div className="project-meta-item">
                             <span style={{ color: 'var(--color-text-muted)' }}>{t('settings.environment', language)}:</span>
-                            <span>{t('settings.prodEnv', language)}</span>
+                            <span>
+                                {import.meta.env.DEV
+                                    ? t('settings.devEnv', language)
+                                    : t('settings.prodEnvReadOnly', language)}
+                            </span>
                         </div>
                     </div>
                 </div>
