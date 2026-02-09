@@ -28,7 +28,7 @@ interface VercelProject {
     framework: string;
     latestDeployments?: Array<{
         id: string;
-        state: string;
+        readyState: string;
         url: string;
         createdAt: number;
     }>;
@@ -117,7 +117,7 @@ export function registerIntegrationRoutes(fastify: FastifyInstance) {
                 name: p.name,
                 framework: p.framework,
                 latestDeployment: p.latestDeployments?.[0] ? {
-                    state: p.latestDeployments[0].state,
+                    state: p.latestDeployments[0].readyState,
                     url: `https://${p.latestDeployments[0].url}`,
                     createdAt: new Date(p.latestDeployments[0].createdAt).toISOString()
                 } : null
@@ -220,8 +220,11 @@ export function registerIntegrationRoutes(fastify: FastifyInstance) {
                             return false;
                         });
                         if (existing && vp.latestDeployments?.[0]) {
+                            const deployment = vp.latestDeployments[0];
                             // Map Vercel states: READY, BUILDING, ERROR, QUEUED, CANCELED
-                            const state = vp.latestDeployments[0].state;
+                            // API returns 'readyState', not 'state'
+                            const state = (deployment as any).readyState;
+
                             if (state === 'READY') {
                                 existing.status = 'running';
                             } else if (state === 'BUILDING' || state === 'QUEUED') {
@@ -229,9 +232,12 @@ export function registerIntegrationRoutes(fastify: FastifyInstance) {
                             } else if (state === 'ERROR' || state === 'CANCELED') {
                                 existing.status = 'error';
                             } else {
-                                existing.status = 'running'; // Default to running for unknown states
+                                existing.status = 'running';
                             }
-                            existing.buildTime = new Date(vp.latestDeployments[0].createdAt).toISOString();
+
+                            const newBuildTime = new Date(deployment.createdAt).toISOString();
+                            console.log(`[Sync] Updating ${existing.name}: Status=${existing.status}, Time=${newBuildTime}`);
+                            existing.buildTime = newBuildTime;
                             // Keep original URL instead of using deployment URL
                         }
                     }
