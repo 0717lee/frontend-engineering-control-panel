@@ -35,9 +35,19 @@ function getStatusColor(status: Project['status']) {
         running: 'running',
         stopped: 'stopped',
         error: 'error',
-        deploying: 'deploying'
+        deploying: 'deploying',
+        'not-deployed': 'stopped'
     };
     return colors[status];
+}
+
+function getTierBadge(tier: Project['tier'], language: Language) {
+    if (!tier) return null;
+    const styles = {
+        product: { class: 'badge-success', label: language === 'zh' ? '🚀 产品级' : '🚀 Product' },
+        experiment: { class: 'badge-warning', label: language === 'zh' ? '🧪 实验级' : '🧪 Experiment' }
+    };
+    return styles[tier];
 }
 
 function ProjectCard({ project, language }: { project: Project; language: Language }) {
@@ -51,9 +61,16 @@ function ProjectCard({ project, language }: { project: Project; language: Langua
                         <span className={`status-dot ${getStatusColor(project.status)}`} />
                         <h3 className="project-name">{project.name}</h3>
                     </div>
-                    <span className={`badge ${platformBadge.class}`} style={{ marginTop: 'var(--spacing-xs)' }}>
-                        {platformBadge.label}
-                    </span>
+                    <div style={{ display: 'flex', gap: 'var(--spacing-xs)', marginTop: 'var(--spacing-xs)', flexWrap: 'wrap' }}>
+                        <span className={`badge ${platformBadge.class}`}>
+                            {platformBadge.label}
+                        </span>
+                        {getTierBadge(project.tier, language) && (
+                            <span className={`badge ${getTierBadge(project.tier, language)!.class}`}>
+                                {getTierBadge(project.tier, language)!.label}
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 {project.errorCount > 0 && (
@@ -215,6 +232,7 @@ function ImportModal({ isOpen, onClose, onSubmit, language }: ImportModalProps) 
                                 <option value="running">{language === 'zh' ? '运行中' : 'Running'}</option>
                                 <option value="stopped">{language === 'zh' ? '已停止' : 'Stopped'}</option>
                                 <option value="deploying">{language === 'zh' ? '部署中' : 'Deploying'}</option>
+                                <option value="not-deployed">{language === 'zh' ? '未部署' : 'Not Deployed'}</option>
                             </select>
                         </div>
                     </div>
@@ -313,6 +331,17 @@ export function ProjectList() {
                     <FolderKanban size={20} />
                     {t('projects.title', language)}
                 </h2>
+                <style>{`
+                    @keyframes spin {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                    .spinning {
+                        animation: spin 1s linear infinite;
+                        transform-origin: center center;
+                        display: inline-block;
+                    }
+                `}</style>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)' }}>
                     <button
                         className="btn btn-primary"
@@ -335,29 +364,31 @@ export function ProjectList() {
                 </div>
             </div>
 
-            {projects.length === 0 ? (
-                <div className="glass-card empty-state">
-                    <div className="empty-state-icon">📂</div>
-                    <p>{t('projects.empty', language)}</p>
-                    <p style={{ fontSize: '0.875rem', marginTop: 'var(--spacing-sm)' }}>
-                        {t('projects.emptyHint', language)}
-                    </p>
-                    <button
-                        className="btn btn-primary"
-                        style={{ marginTop: 'var(--spacing-md)' }}
-                        onClick={() => setShowImportModal(true)}
-                    >
-                        <Plus size={14} />
-                        {language === 'zh' ? '导入第一个项目' : 'Import your first project'}
-                    </button>
-                </div>
-            ) : (
-                <div className="grid-3">
-                    {projects.map((project) => (
-                        <ProjectCard key={project.id} project={project} language={language} />
-                    ))}
-                </div>
-            )}
+            {
+                projects.length === 0 ? (
+                    <div className="glass-card empty-state">
+                        <div className="empty-state-icon">📂</div>
+                        <p>{t('projects.empty', language)}</p>
+                        <p style={{ fontSize: '0.875rem', marginTop: 'var(--spacing-sm)' }}>
+                            {t('projects.emptyHint', language)}
+                        </p>
+                        <button
+                            className="btn btn-primary"
+                            style={{ marginTop: 'var(--spacing-md)' }}
+                            onClick={() => setShowImportModal(true)}
+                        >
+                            <Plus size={14} />
+                            {language === 'zh' ? '导入第一个项目' : 'Import your first project'}
+                        </button>
+                    </div>
+                ) : (
+                    <div className="grid-3">
+                        {projects.map((project) => (
+                            <ProjectCard key={project.id} project={project} language={language} />
+                        ))}
+                    </div>
+                )
+            }
 
             <ImportModal
                 isOpen={showImportModal}
@@ -372,6 +403,6 @@ export function ProjectList() {
                     to { transform: rotate(360deg); }
                 }
             `}</style>
-        </div>
+        </div >
     );
 }

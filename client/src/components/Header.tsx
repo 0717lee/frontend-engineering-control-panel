@@ -137,6 +137,17 @@ export function Header() {
             )}
 
             <style>{`
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+                
+                .spinning {
+                    animation: spin 1s linear infinite;
+                    transform-origin: center center;
+                    display: inline-block;
+                }
+
                 .notification-panel {
                     position: absolute;
                     top: 100%;

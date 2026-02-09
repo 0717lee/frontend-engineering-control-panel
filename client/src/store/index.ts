@@ -31,10 +31,19 @@ export interface Project {
     platform: 'vercel' | 'github' | 'self-hosted' | 'cloudflare' | 'other';
     version: string;
     buildTime: string;
-    status: 'running' | 'stopped' | 'error' | 'deploying';
+    status: 'running' | 'stopped' | 'error' | 'deploying' | 'not-deployed';
     url?: string;
     gitCommit?: string;
     errorCount: number;
+    /** 项目定位: product = 产品级, experiment = 实验级 */
+    tier?: 'product' | 'experiment';
+    /** 工程评估信息 */
+    assessment?: {
+        vercelFit: boolean;       // 是否适合 Vercel
+        needsServer: boolean;     // 是否需要服务器能力
+        observability: 'none' | 'basic' | 'full';  // 可观察性级别
+        evaluatedAt: string;      // 评估时间
+    };
 }
 
 export interface ErrorLog {

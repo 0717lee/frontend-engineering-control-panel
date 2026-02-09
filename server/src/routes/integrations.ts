@@ -206,9 +206,19 @@ export function registerIntegrationRoutes(fastify: FastifyInstance) {
                     const vercelProjects = data.projects || [];
 
                     for (const vp of vercelProjects) {
-                        const existing = db.data.projects.find(p =>
-                            p.name.toLowerCase().includes(vp.name.toLowerCase()) && p.platform === 'vercel'
-                        );
+                        const existing = db.data.projects.find(p => {
+                            if (p.platform !== 'vercel') return false;
+
+                            // 1. Try exact or substring name match (bidirectional)
+                            const pName = p.name.toLowerCase();
+                            const vName = vp.name.toLowerCase();
+                            if (pName.includes(vName) || vName.includes(pName)) return true;
+
+                            // 2. Try URL match (if project URL contains Vercel project name/ID)
+                            if (p.url && p.url.toLowerCase().includes(vName)) return true;
+
+                            return false;
+                        });
                         if (existing && vp.latestDeployments?.[0]) {
                             // Map Vercel states: READY, BUILDING, ERROR, QUEUED, CANCELED
                             const state = vp.latestDeployments[0].state;
