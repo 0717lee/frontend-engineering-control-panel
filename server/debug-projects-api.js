@@ -8,40 +8,40 @@ dotenv.config({ path: join(__dirname, '.env') });
 const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
 
 async function debugVercelProjects() {
-    console.log('🔍 Fetching Vercel projects list...');
+    console.log('🔍 Debugging Vercel Token...');
+    if (!VERCEL_TOKEN) {
+        console.error('❌ VERCEL_TOKEN NOT FOUND in process.env');
+        return;
+    }
+    console.log(`✅ Token Found: ${VERCEL_TOKEN.substring(0, 4)}...${VERCEL_TOKEN.substring(VERCEL_TOKEN.length - 4)}`);
+    console.log(`📏 Token Length: ${VERCEL_TOKEN.length}`);
+
+    console.log('\n🔍 Fetching Vercel projects list (/v9/projects)...');
     try {
         const res = await fetch('https://api.vercel.com/v9/projects', {
             headers: { Authorization: `Bearer ${VERCEL_TOKEN}` }
         });
 
+        console.log(`📡 Response Status: ${res.status} ${res.statusText}`);
+
+        const data = await res.json();
+
         if (!res.ok) {
-            console.error(`❌ API Error: ${res.status} ${res.statusText}`);
-            console.log(await res.text());
+            console.error('❌ API Error Body:', JSON.stringify(data, null, 2));
             return;
         }
 
-        const data = await res.json();
         const projects = data.projects || [];
         console.log(`✅ Found ${projects.length} projects.`);
 
         if (projects.length > 0) {
-            const first = projects[0];
-            console.log('\n📋 Sample Project Keys:', Object.keys(first));
-            console.log('\n📋 Sample Project (limited):', JSON.stringify({
-                name: first.name,
-                id: first.id,
-                latestDeployments: first.latestDeployments,
-                link: first.link,
-                lastAlias: first.lastAlias
-            }, null, 2));
-
-            // Check if Collabboard is here
             const collab = projects.find(p => p.name.toLowerCase().includes('collab'));
             if (collab) {
-                console.log('\n🎯 Collabboard Project Details:', JSON.stringify(collab, null, 2));
+                console.log('\n🎯 Collabboard Project (Full Structure):');
+                console.log(JSON.stringify(collab, null, 2));
             } else {
-                console.log('\n⚠️ Collabboard not found in Vercel project list.');
-                console.log('Available names:', projects.map(p => p.name).join(', '));
+                console.log('\n⚠️ Collabboard not found.');
+                console.log('Available projects:', projects.map(p => p.name).join(', '));
             }
         }
     } catch (err) {
